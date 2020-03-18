@@ -40,10 +40,10 @@ LinkList::~LinkList()
 } 
 
 //遍历单链表
-void LinkList::TravalLinkList()
-{
+//void LinkList::TravalLinkList()
+//{
     
-} 
+//} 
 //获取单链表的长度
 int LinkList::GetLength()
 {  
