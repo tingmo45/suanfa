@@ -14,12 +14,12 @@ class LinkList
 	public:
 		LinkList();     //构建一个单链表;    
 		~LinkList(); //销毁一个单链表;    
-		void TravalLinkList(); //遍历线性表   
+		void TravaiLinkList(); //遍历线性表   
 		int GetLength(); //获取线性表长度 
-        int  LocateData(const DataType &data) const;
-		Status  GetData(int i,DataType &data) const;
-		Status  InsertElemAtIndex(int i,const DataType &data);
-		Status  DeleteElemAtIndex(int i,DataType &data);
+        int  LocateData(const DataType &data) const;//查找结点data
+		Status  GetData(int i,DataType &data) const;//查找第i个结点
+		Status  InsertElemAtIndex(int i,const DataType &data);//在指定位置插入指定元素
+		Status  DeleteElemAtIndex(int i,DataType &data);//删除指定的数据
 		
 	private:  
 		Node * head; //头指针
@@ -38,12 +38,11 @@ LinkList::~LinkList()
 {  
 	
 } 
-
 //遍历单链表
-//void LinkList::TravalLinkList()
-//{
+void LinkList::TravaiLinkList()
+{
     
-//} 
+} 
 //获取单链表的长度
 int LinkList::GetLength()
 {  
