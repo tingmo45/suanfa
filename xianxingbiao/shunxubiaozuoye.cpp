@@ -15,7 +15,7 @@ public:
 	int  length() const;
 	Status  getDate(int i,DataType &d) const;//按位置查找 位置与下标有关 位置-1=下标
 	Status  locateDate(DataType x) const;//按值查找
-	Status  insertDate(const DataType &item, int i);//在第i个位置插入一个元素
+	Status  insertDate(const DataType &item);//在第i个位置插入一个元素
 	Status  deleteDate(int i,DataType &d);//删除第i个元素
     Status  deleteRange(int i,int j);//删除顺序表中从第i个位置开始（包括i）到第j个位置（包括j）结束的所有数据元素
 	void display();
@@ -80,24 +80,37 @@ Status SeqList::locateDate(int x) const
     }
 }
 //在第i个位置插入一个元素
-Status  SeqList::insertDate(const DataType &item, int i)
+Status  SeqList::insertDate(const DataType &item)
 {
     int j;
     if(len==maxLen)//判断表是否已满
         return FULL;
     else
     {
-        if(i<0||i>len+1)//判断i是否合法
-            return RANGE_ERROR;
-        else
-        {
-            for(j=len;j>=i;j--)
-                data[j]=data[j-1];//让位
-            data[j]=item;//插入
+        // if(i<0||i>len+1)//判断i是否合法
+        //     return RANGE_ERROR;
+        // else
+        // {
+            for(j=0;j<=len+1;j++)
+            {
+                if(item<=data[j])
+                {
+                    data[j+1]=data[j];//让位
+                    data[j]=item;//插入
+                    break;
+                }
+                else
+                {
+                    // if(item<data[len])
+                    data[j-1]=data[j];//让位
+                    data[j]=item;//插入
+                    break;
+                }
+            }
             len++;
              cout<<"插入成功"<<endl;
             return SUCCESS;
-        }
+        // }
     }
 }
 //删除第i个元素
@@ -141,13 +154,6 @@ Status  SeqList::deleteRange(int i,int j)
         return SUCCESS;
     }
 }
-// ostream& operator<<(ostream& out, const SeqList& sl)
-// {
-//     for(int j=0;j<=sl.len;j++)
-//         out<<"数组元素"<<sl.data[j];
-//         out<<"当前数组长度"<<sl.len<<"最大数组长度"<<sl.maxLen<<endl;
-//         return out;
-// }
 void SeqList::display()
 {
     cout<<"数组元素"<<endl;
@@ -158,25 +164,27 @@ void SeqList::display()
 int main()
 {
     SeqList *sl=new SeqList(10);
-    DataType i=7;
+    DataType i=90;
     DataType &item=i;
+     sl->display();
     // sl->insertDate(1,20);
     // sl->insertDate(2,40);
     // sl->insertDate(3,50);
     // sl->insertDate(4,70);
     // sl->insertDate(5,80);
-    sl->display();
-    // if(sl->insertDate(item,1)==0)
-        //cout<<"插入成功"<<endl;
+   
+    if(sl->insertDate(item)==0)
+        cout<<"插入成功"<<endl;
+        sl->display();
         // DataType q;
         // sl->deleteDate(1,q);
         // cout<<"执行删除后"<<endl;
         // sl->display();
         // cout<<sl->getDate(2,q);
         // cout<<sl->locateDate(2);
-         cout<<sl->deleteRange(2,3);
-         cout<<"执行删除后"<<endl;
-        sl->display();
+        //  cout<<sl->deleteRange(2,3);
+        //  cout<<"执行删除后"<<endl;
+        // sl->display();
         // cout<<sl<<endl;
         system("pause");
     return 0;

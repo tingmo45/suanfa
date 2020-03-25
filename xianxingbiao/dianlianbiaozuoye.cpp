@@ -18,8 +18,8 @@ class LinkList
 		int GetLength(); //获取线性表长度 
         int  LocateData(const DataType &data) const;//查找结点data
 		Status  GetData(int i,DataType &data) const;//查找第i个结点
-		Status  InsertElemAtIndex(int i,const DataType &data);//在指定位置插入指定元素
-		Status  DeleteElemAtIndex(int i,DataType &data);//删除指定的数据
+		Status  InsertElemAtIndex(const DataType &data);//在指定位置插入指定元素
+		Status  DeleteElemAtIndex(DataType &data);//删除指定的数据
 		
 	private:  
 		Node * head; //头指针
@@ -36,7 +36,7 @@ LinkList::LinkList()
 //销毁单链表
 LinkList::~LinkList()
 {  
-	
+	delete head;
 } 
 //遍历单链表
 void LinkList::TravaiLinkList()
@@ -46,7 +46,7 @@ void LinkList::TravaiLinkList()
 //获取单链表的长度
 int LinkList::GetLength()
 {  
-	
+	return this->length;
 } 
 
 //查找结点data
@@ -95,60 +95,77 @@ Status LinkList::GetData(int i,DataType &data) const
 			return SUCCESS;	
 	}
 } 
-//在指定位置插入指定元素
-Status LinkList::InsertElemAtIndex(int i,const DataType &data)
+//插入指定元素
+Status LinkList::InsertElemAtIndex(const DataType &data)
 {  
-	Node*p=head;//第i个位置的前一个位置
+	Node*p=head;//定位第一个结点
 	Node*q=new Node;//新建一个结点用于存放插入位置的值
 	q->data=data;//被插入数据域的值
-	q=p->next;//定位到第一个有效结点
-	int count=1;
-	if(i<1||i>length)//判断i的合法性
-		return FAIL;
-	else
-	{
-		while(count<i)
+	q=p->next;//定位到有效结点的下一个
+    int count=1;
+    if(q->data!=NULL)//判断q的合法性
+    {
+		while(count!=length&&p->next!=NULL)//遍历
 		{
-			if(p->data<q->data)//判断当前指针数据域是否大于被插入数据域
-			{
-				p=p->next;
-				count++;
-			}
-			else
-				break;
+            if(p->data<q->data&&p->data!=NULL)
+            {
+                p=p->next;
+                count++;
+            }
+            else
+                break;
 		}
 			q->next=p->next;
 			p->next=q;
 			length++;
 			cout<<"插入成功，值为"<<p<<endl;
 			return SUCCESS;
-	}
+    }
+    else
+    {
+        return FAIL;
+    }
+    delete q;
 } 
 
 //删除指定的数据
-Status LinkList::DeleteElemAtIndex(int i,DataType &data)
+Status LinkList::DeleteElemAtIndex(DataType &data)
 {  
-	Node*p=head;//停在被删除的前一个
-	Node*q=p->next;//工作指针
-	int count=1;
-	if(i<1||i>length)
-		return FAIL;
-	else
-	{
-		while (count<i)
+    Node*p=head,*z;//定位头结点
+	Node*q=new Node;//新建一个结点用于存放插入位置的值
+	q->data=data;//被删除数据域的值
+	q=p->next;//定位到有效结点
+    int count=1;
+    if(q->data!=NULL)//判断q的合法性
+    {
+		while(count!=length&&p->next!=NULL)//遍历
 		{
-			count++;
-			p=p->next;
+            if(p->data!=q->data)
+            {
+                p=p->next;
+                count++;
+            }
+            else
+                break;
 		}
-		q->next=p->next;
-		delete p;
-		length--;
+            q->next=p->next;
+            delete p;
+            length--;
 			cout<<"删除成功值为"<<data<<endl;
 			return SUCCESS;
-			
-	}
+    }
+    else
+    {
+        return FAIL;
+    }
 }
 int main()
 {
+   LinkList *sl=new LinkList();
+    DataType i=7;
+    DataType &data =i;
+         cout<<sl->DeleteElemAtIndex(i);
+        // cout<<sl<<endl;
+        system("pause");
     return 0;
 };
