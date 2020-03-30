@@ -19,23 +19,18 @@ public:
 	Status  deleteDate(int i,DataType &d);//删除第i个元素
     Status  deleteRange(int i,int j);//删除顺序表中从第i个位置开始（包括i）到第j个位置（包括j）结束的所有数据元素
 	void display();
-    //friend ostream& operator<<(ostream& out, const SeqList& sl);
 };
 SeqList::SeqList(int size)
 {
     data = new DataType[size];//动态分配数组
     maxLen=size;
-	len=5;
-     data[0]=10;
-     data[1]=16;
-     data[2]=43;
-     data[3]=55;
-     data[4]=66;
-    // data[5]=46;
-    // data[6]=36;
-    // data[7]=49;
-    // data[8]=52;
-    // data[9]=61;
+	len=0;
+    //  data[0]=10;
+    //  data[1]=16;
+    //  data[2]=43;
+    //  data[3]=55;
+    //  data[4]=66;
+    //  data[5]=67;
 }
 SeqList::~SeqList()
 {
@@ -121,38 +116,52 @@ Status  SeqList::deleteDate(int i,DataType &d)//i要删除的位置 d将要删�
 //删除顺序表中从第i个位置开始（包括i）到第j个位置（包括j）结束的所有数据元素
 Status  SeqList::deleteRange(int i,int j)
 {
-    int a=0;//记录位移次数
-    int q=data[i-1];
-    int f=data[j-1];
-    if(i<=0&&j<=0&&i>len&&j<=len)//判断i和j是否合法
+    int a=0;//记录元素个数 
+    int q=j-1;
+    if(i<=0&&j<=0&&i>=len&&j<=len)//判断i和j是否合法
         return RANGE_ERROR;
     else
     {
         for(int z=i-1;z<=len;z++)
-        {
-            if(data[z]>=data[j-1])
+        {  
+            if(z<=j-1)//查找i到j的数据元素及个数
             { 
-                a++;//记录位移次数
+                cout<<"要删除的第"<<i<<"至第"<<j<<"个位置数据元素为："<<data[z]<<endl;
+                a++;//记录元素个数 
             }
-            data[z]=data[z+1];//移位
+            q++;//将j之后的值移动位置加一
+            data[z]=data[q];//移位
         }
-                len=len-a;
-                cout<<"第"<<i<<"至第"<<j<<"个元素删除成功,数据为："<<q<<f<<endl;
+            len=len-a;
         return SUCCESS;
     }
 }
-// ostream& operator<<(ostream& out, const SeqList& sl)
+// Status  SeqList::deleteRange(int i,int j)
 // {
-//     for(int j=0;j<=sl.len;j++)
-//         out<<"数组元素"<<sl.data[j];
-//         out<<"当前数组长度"<<sl.len<<"最大数组长度"<<sl.maxLen<<endl;
-//         return out;
+//     //删除顺序表中从第i个位置开始（包括i）到第j个位置（包括j）结束的所有数据元素
+//     int temp = j-1;//记录得到后面的坐标
+//     int code = j-i+1; //得到个数
+//     if(i>0 && j<=len && j>0 && i<=len)//判断位置i,j大于0 且小于等于数组长度
+//     {
+//         for(int k=i-1; k<len; k++) //从开始位置遍历
+//         {
+//             temp++;
+//             data[k] = data[temp];//将开始位置的数设为j的后一位
+//         }
+//         len = len-code;//长度减去要删除的个数
+//         return SUCCESS;
+//     }
+//     return RANGE_ERROR;
 // }
+
 void SeqList::display()
 {
+    int w=0;
     cout<<"数组元素"<<endl;
    for(int j=0;j<len;j++)
-        {cout<<"第"<<j+1<<"数组元素"<<data[j]<<endl;}
+        {
+            w++;
+            cout<<"第"<<w<<"数组元素"<<data[j]<<endl;}
         cout<<"当前数组长度"<<length()<<"最大数组长度"<<maxLen<<endl;
 }
 int main()
@@ -160,24 +169,26 @@ int main()
     SeqList *sl=new SeqList(10);
     DataType i=7;
     DataType &item=i;
-    // sl->insertDate(1,20);
-    // sl->insertDate(2,40);
-    // sl->insertDate(3,50);
-    // sl->insertDate(4,70);
-    // sl->insertDate(5,80);
+    for(int k=1;k<=9;k++)
+    {
+        cout<<"输入插入元素"<<endl;
+        cin>>item;
+        sl->insertDate(item,k);
+    }
     sl->display();
-    // if(sl->insertDate(item,1)==0)
-        //cout<<"插入成功"<<endl;
-        // DataType q;
-        // sl->deleteDate(1,q);
-        // cout<<"执行删除后"<<endl;
-        // sl->display();
-        // cout<<sl->getDate(2,q);
-        // cout<<sl->locateDate(2);
-         cout<<sl->deleteRange(2,3);
-         cout<<"执行删除后"<<endl;
-        sl->display();
-        // cout<<sl<<endl;
-        system("pause");
+    DataType q;
+     if(sl->deleteDate(1,q)==0)
+     {
+        cout<<"删除成功!效果如下"<<endl;
+     }
+     sl->display();
+     cout<<sl->getDate(2,q);
+     cout<<sl->locateDate(2);
+    if(sl->deleteRange(2,4)==0)
+    {
+        cout<<"删除成功!效果如下"<<endl;
+    }
+    sl->display();
+    system("pause");
     return 0;
 };
